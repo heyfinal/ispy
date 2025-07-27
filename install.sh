@@ -23,17 +23,68 @@ if ! command -v python3 &> /dev/null; then
 fi
 
 PYTHON_VERSION=$(python3 -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
-if [[ $(echo "$PYTHON_VERSION < 3.8" | bc -l) -eq 1 ]]; then
+PYTHON_MAJOR=$(python3 -c 'import sys; print(sys.version_info[0])')
+PYTHON_MINOR=$(python3 -c 'import sys; print(sys.version_info[1])')
+
+# Check if Python version is compatible (3.8+)
+if [[ $PYTHON_MAJOR -eq 3 && $PYTHON_MINOR -ge 8 ]]; then
+    echo "✅ Python $PYTHON_VERSION detected (compatible)"
+elif [[ $PYTHON_MAJOR -gt 3 ]]; then
+    echo "✅ Python $PYTHON_VERSION detected (future version - should work)"
+else
     echo "❌ Error: Python $PYTHON_VERSION detected. Python 3.8+ required"
-    exit 1
+    echo "Installing compatible Python version..."
+    
+    # Install Python 3.11 via Homebrew
+    if command -v brew &> /dev/null; then
+        echo "📦 Installing Python 3.11 via Homebrew..."
+        brew install python@3.11
+        
+        # Create alias for python3.11
+        if [[ -f "/opt/homebrew/bin/python3.11" ]]; then
+            PYTHON_CMD="/opt/homebrew/bin/python3.11"
+        elif [[ -f "/usr/local/bin/python3.11" ]]; then
+            PYTHON_CMD="/usr/local/bin/python3.11"
+        else
+            echo "❌ Failed to install Python 3.11"
+            exit 1
+        fi
+        
+        echo "✅ Python 3.11 installed successfully"
+    else
+        echo "❌ Homebrew required for automatic Python installation"
+        echo "Please install Homebrew first: /bin/bash -c \"\$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\""
+        exit 1
+    fi
+fi
+
+# Use the appropriate Python command
+if [[ -n "$PYTHON_CMD" ]]; then
+    PYTHON_EXEC="$PYTHON_CMD"
+else
+    PYTHON_EXEC="python3"
 fi
 
 echo "✅ Python $PYTHON_VERSION detected"
 
-# Check for Homebrew
+# Check for Homebrew and install if needed
 if ! command -v brew &> /dev/null; then
     echo "⚠️  Homebrew not detected. Installing Homebrew..."
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    
+    # Add Homebrew to PATH for Apple Silicon Macs
+    if [[ -f "/opt/homebrew/bin/brew" ]]; then
+        echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> $HOME/.zprofile
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+    fi
+    
+    # Add Homebrew to PATH for Intel Macs  
+    if [[ -f "/usr/local/bin/brew" ]]; then
+        echo 'export PATH="/usr/local/bin:$PATH"' >> $HOME/.zprofile
+        export PATH="/usr/local/bin:$PATH"
+    fi
+    
+    echo "✅ Homebrew installed successfully"
 fi
 
 echo "📦 Installing system dependencies..."
@@ -59,7 +110,7 @@ done
 
 # Create virtual environment
 echo "🐍 Setting up Python virtual environment..."
-python3 -m venv venv
+$PYTHON_EXEC -m venv venv
 source venv/bin/activate
 
 # Upgrade pip
