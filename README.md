@@ -104,7 +104,7 @@
 ### 📦 **One-Line Installation**
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/ispy/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/heyfinal/ispy/main/install.sh | bash
 ```
 
 *Installs Python backend, SwiftUI GUI, and all dependencies automatically*
@@ -126,7 +126,7 @@ curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/ispy/main/install.sh 
 
 ### 2️⃣ **Installation**
 ```bash
-git clone https://github.com/YOUR_USERNAME/ispy.git
+git clone https://github.com/heyfinal/ispy.git
 cd ispy
 chmod +x install.sh
 ./install.sh
@@ -479,9 +479,9 @@ ispy --update
 
 ### 🎯 **Ready to Experience the Future of iOS Diagnostics?**
 
-[![Download](https://img.shields.io/badge/Download-iSpy-00ccff?style=for-the-badge&logo=apple)](https://github.com/YOUR_USERNAME/ispy/releases)
-[![Documentation](https://img.shields.io/badge/Read-Documentation-blue?style=for-the-badge&logo=gitbook)](https://github.com/YOUR_USERNAME/ispy/wiki)
-[![Community](https://img.shields.io/badge/Join-Community-purple?style=for-the-badge&logo=discord)](https://github.com/YOUR_USERNAME/ispy/discussions)
+[![Download](https://img.shields.io/badge/Download-iSpy-00ccff?style=for-the-badge&logo=apple)](https://github.com/heyfinal/ispy/releases)
+[![Documentation](https://img.shields.io/badge/Read-Documentation-blue?style=for-the-badge&logo=gitbook)](https://github.com/heyfinal/ispy/wiki)
+[![Community](https://img.shields.io/badge/Join-Community-purple?style=for-the-badge&logo=discord)](https://github.com/heyfinal/ispy/discussions)
 
 **Made with ❤️ for iOS power users, developers, and IT professionals**
 
