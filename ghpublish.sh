@@ -188,8 +188,13 @@ echo -e "${YELLOW}🚀 Pushing to GitHub...${NC}"
 if git push -u origin main; then
     echo -e "${GREEN}✅ Successfully pushed to GitHub${NC}"
 else
-    echo -e "${RED}❌ Error pushing to GitHub${NC}"
-    exit 1
+    echo -e "${YELLOW}⚠️  Repository exists, force pushing...${NC}"
+    if git push -u origin main --force; then
+        echo -e "${GREEN}✅ Successfully force-pushed to GitHub${NC}"
+    else
+        echo -e "${RED}❌ Error pushing to GitHub${NC}"
+        exit 1
+    fi
 fi
 
 # Create initial release
